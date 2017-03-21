@@ -1,10 +1,9 @@
 void snake() {
-  delay(1000);
-
   JXValue = 0;
   JYValue = 0;
   buttonValue = 0;
   score = 4;
+  frame = 0;
 
   int bodyPixelsX[400];
   int bodyPixelsY[400];
@@ -12,7 +11,6 @@ void snake() {
   byte Direction = 2;
   int oldDirection = 2;
   int food[20];//(X,Y)
-  int cycle = 0;
 
 
   for (int i = 0; i < 20; i += 2) {
@@ -36,13 +34,13 @@ void snake() {
     JYValue = getAxis(0, 0);
     buttonValue = getButton(0, 0);
 
-    if (JYValue < 450) { //go the direction we say
+    if (JYValue < 500) { //go the direction we say
       Direction = 3;
-    } else if (JYValue > 650) {
+    } else if (JYValue > 600) {
       Direction = 1;
-    } if (JXValue < 450) {
+    } if (JXValue < 500) {
       Direction = 4;
-    } else if (JXValue > 650) {
+    } else if (JXValue > 600) {
       Direction = 2;
     }
     //protects you from going back on yourself
@@ -52,7 +50,7 @@ void snake() {
     if (Direction == oldDirection - 2) {
       Direction = oldDirection;
     }
-    if (cycle == 10) {
+    if (frame == 10) {
       switch (Direction) {// keeps it going forward
         case 1:
           bodyPixelsY[0]++;
@@ -115,9 +113,9 @@ void snake() {
       backgroundLayer.swapBuffers(false);
     }
 
-    cycle++;
-    if (cycle == 11) {
-      cycle = 1;
+    frame++;
+    if (frame == 11) {
+      frame = 1;
     }
     delay(10);
   }
@@ -128,26 +126,26 @@ GameOver:
   delay(2000);
   backgroundLayer.fillScreen({0, 0, 0});
   backgroundLayer.drawString(0, 2, {255, 0, 0}, "Score: ");
-  String(score).toCharArray(str,50);
-  backgroundLayer.drawString(0, 16, {255,0,0},str);
+  String(score).toCharArray(str, 50);
+  backgroundLayer.drawString(0, 16, {255, 0, 0}, str);
   backgroundLayer.swapBuffers(false);
   delay(2000);
   if (score > SHighScore) {
-        SHighScore = score;
-        backgroundLayer.fillScreen({0,0,0});
-        backgroundLayer.drawString(0, 2, {0, 180, 0}, "New High");
-        backgroundLayer.drawString(8, 16, {0, 180, 0}, "Score!");
-        backgroundLayer.swapBuffers(false);
-        delay(2000);
-      } else {
-        backgroundLayer.fillScreen({0,0,0});
-        backgroundLayer.drawString(16, 0, {0, 180, 0}, "High");
-        backgroundLayer.drawString(12, 10, {0, 180, 0}, "Score");
-        String(SHighScore).toCharArray(str,50);
-        backgroundLayer.drawString(20, 20, {255,0,0},str);
-        backgroundLayer.swapBuffers(false);
-        delay(2000);
-      }
+    SHighScore = score;
+    backgroundLayer.fillScreen({0, 0, 0});
+    backgroundLayer.drawString(0, 2, {0, 180, 0}, "New High");
+    backgroundLayer.drawString(8, 16, {0, 180, 0}, "Score!");
+    backgroundLayer.swapBuffers(false);
+    delay(2000);
+  } else {
+    backgroundLayer.fillScreen({0, 0, 0});
+    backgroundLayer.drawString(16, 0, {0, 180, 0}, "High");
+    backgroundLayer.drawString(12, 10, {0, 180, 0}, "Score");
+    String(SHighScore).toCharArray(str, 50);
+    backgroundLayer.drawString(20, 20, {255, 0, 0}, str);
+    backgroundLayer.swapBuffers(false);
+    delay(2000);
+  }
   return;
 }
 

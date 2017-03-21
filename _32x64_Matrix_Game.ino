@@ -44,11 +44,12 @@ boolean oldButtonValue = 0;
 int oldJXValue = 0;
 int oldJYValue = 0;
 int score = 0;
-int IHighScore;
+int IHighScore = 5700;
 int SHighScore = 187;
 String texts = "";
 char str[50];
 int level = 0;
+int frame = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -78,10 +79,11 @@ void loop() {
   //read inputs
   JYValue = getAxis(0, 0);
   buttonValue = getButton(0, 0);
+  backgroundLayer.fillScreen({0, 0, 0});
   if (getButton(0, 1)) {
     backgroundLayer.setFont(font5x7);
     while (!getButton(0, 0)) {
-      brightness = map(1100-getAxis(0, 0), 0, 1100, 0, 255);
+      brightness = map(1100 - getAxis(0, 0), 0, 1100, 0, 255);
       char percent[] = "100%";
       percent[0] = '0' + (brightness * 100.0 / 255) / 100;
       percent[1] = '0' + (int)(brightness * 100.0 / 255) % 100 / 10;
@@ -172,10 +174,12 @@ void runGame(void game()) {
   scrollingLayer2.update("");
   scrollingLayer1.stop();
   scrollingLayer2.stop();
+  delay(1000);
   game();
   backgroundLayer.fillScreen({0, 0, 0});
-  backgroundLayer.swapBuffers(false);
+  backgroundLayer.swapBuffers(true);
   oldChoice = 5;
+  delay(100);
 }
 
 void beginJoysticks() {
@@ -184,9 +188,9 @@ void beginJoysticks() {
   ads[0].begin();
   ads[1].begin();
 }
-bool isJoyConnected(int joy) {
-  ads[joy].readADC_SingleEnded(0);
-}
+//bool isJoyConnected(int joy) {
+//  ads[joy].readADC_SingleEnded(0);
+//}
 int getAxis(int joy, int num) {
   return ads[joy].readADC_SingleEnded(num + 1);
 }

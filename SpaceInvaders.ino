@@ -1,19 +1,20 @@
 void spaceInvaders() {
-  delay(1000);
   JXValue = 0;
   buttonValue = 0;
   oldButtonValue = 0;
   score = 0;
   level = 1;
+  frame = 0;
 
 start:
   int enemyData[81]; // 28 enemies (x,y,type)
   int shotData[18];  //6 possible shots at once (x,y,Direction)
   byte place = 8;
   int xPos = place;
+  int yPos = 0;
   int bonusPos = 64;
   int time = 200;
-  byte myShipPos = 2;
+  byte myShipPos = 31;
   int countDown = 100;
   int arrayPos = 0;
   int lives = 3;
@@ -21,7 +22,6 @@ start:
   int row = 0;
   int column = 0;
   boolean eDirection = 1;
-  int cycle = 0;
   byte choice = 0;
 
 
@@ -72,19 +72,19 @@ start:
         enemyData[arrayPos + 1] = 22;
         enemyData[arrayPos + 2] = 3;
       }
-//      Serial.print(arrayPos);
-//      Serial.print(":");
-//      Serial.print(enemyData[arrayPos]);
-//      Serial.print(",");
-//      Serial.print(enemyData[arrayPos + 1]);
-//      Serial.print(",");
-//      Serial.print(enemyData[arrayPos + 2]);
-//      Serial.println();
-        arrayPos = arrayPos + 3;
+      //      Serial.print(arrayPos);
+      //      Serial.print(":");
+      //      Serial.print(enemyData[arrayPos]);
+      //      Serial.print(",");
+      //      Serial.print(enemyData[arrayPos + 1]);
+      //      Serial.print(",");
+      //      Serial.print(enemyData[arrayPos + 2]);
+      //      Serial.println();
+      arrayPos = arrayPos + 3;
 
     }
   }
-  
+
   backgroundLayer.fillScreen({0, 0, 0});
   backgroundLayer.setFont(font6x10);
   String(level).toCharArray(str, 50);
@@ -99,12 +99,12 @@ start:
     backgroundLayer.fillScreen({0, 0, 0});
 
     //user movement code
-    if (JXValue < 400) {
+    if (JXValue < 500) {
       myShipPos--;
       if (myShipPos < 2) { //keeps ship on screen
         myShipPos = 2;
       }
-    } else if (JXValue > 700) {
+    } else if (JXValue > 600) {
       myShipPos++;
       if (myShipPos > 61) { //keeps ship on screen
         myShipPos = 61;
@@ -143,7 +143,7 @@ start:
           } else {
             arrayPos = 0;
             for (int y = 0; y < 27; y++) {
-              if (enemyData[arrayPos + 1] == shotData[1]) {
+              if (enemyData[arrayPos + 1] + yPos == shotData[1]) {
                 if (enemyData[arrayPos] + 3 + place > shotData[0]) {
                   if (enemyData[arrayPos] - 3 + place < shotData[0]) {
                     shotData[i + 2] = 3;
@@ -195,7 +195,7 @@ start:
                   backgroundLayer.drawPixel(myShipPos + 1, 30, {255, 36, 0});
                   backgroundLayer.swapBuffers(false);
                   delay(1000);
-                  myShipPos = 2;
+                  myShipPos = 31;
                 }
               }
             }
@@ -222,7 +222,7 @@ fire:
         for (int t = 3; t < 18; t = t + 3) {
           if (shotData[t + 2] == 0) {
             shotData[t] = enemyData[choice] + place;
-            shotData[t + 1] = enemyData[choice + 1];
+            shotData[t + 1] = enemyData[choice + 1] + yPos;
             shotData[t + 2] = 2;
             countDown = int(random(10, 50));
             goto shoot;
@@ -231,6 +231,7 @@ fire:
       }
     }
 shoot:
+
     if (enemies == 0) {
       backgroundLayer.setFont(font6x10);
       backgroundLayer.fillScreen({0, 0, 0});
@@ -263,16 +264,18 @@ shoot:
             goto start;
           } else {
             lives = 0;
+            enemies--;
+            backgroundLayer.fillScreen({0, 0, 0});
+            goto shoot;
           }
         }
         backgroundLayer.swapBuffers(false);
         delay(100);
 
       }
-      goto start;
     }
     //    //testing if you lose
-    if (lives < 1) {
+    if (lives < 0) {
       backgroundLayer.setFont(font8x13);
       backgroundLayer.drawString(0, 10, {255, 0, 0}, "GameOver");
       backgroundLayer.swapBuffers(false);
@@ -303,7 +306,7 @@ shoot:
     }
 
     //move guys
-    if (cycle == 20) {
+    if (frame == 20) {
       if (eDirection) {
         place--;
       } else {
@@ -311,9 +314,11 @@ shoot:
       }
       if (place == 10) {
         eDirection = true;
+        yPos++;
       }
       if (place == 1) {
         eDirection = false;
+        yPos++;
       }
     }
 
@@ -327,17 +332,17 @@ shoot:
         for (int y = 0; y < 5; y++) {
           if (enemyData[arrayPos + 2] == 1) {
             if (invader1[row][column]) {
-              backgroundLayer.drawPixel(xPos, y + 6, {0, 255, 36});
+              backgroundLayer.drawPixel(xPos, y + 6 + yPos, {0, 255, 36});
             }
           }
           if (enemyData[arrayPos + 29] == 2) {
             if (invader2[row][column]) {
-              backgroundLayer.drawPixel(xPos, y + 12, {0, 255, 36});
+              backgroundLayer.drawPixel(xPos, y + 12 + yPos, {0, 255, 36});
             }
           }
           if (enemyData[arrayPos + 56] == 3) {
             if (invader3[row][column]) {
-              backgroundLayer.drawPixel(xPos, y + 18, {0, 255, 36});
+              backgroundLayer.drawPixel(xPos, y + 18 + yPos, {0, 255, 36});
             }
           }
           row++;
@@ -350,7 +355,8 @@ shoot:
       arrayPos = arrayPos + 3;
     }
 
-    if (time == 0) { //bonus ship rendering
+    //bonus ship rendering
+    if (time == 0) {
       for (int x = 0; x < 5; x++) {
         for (int y = 0; y < 9; y++) {
           if (bonusShip[x][y]) {
@@ -358,7 +364,7 @@ shoot:
           }
         }
       }
-      if (cycle % 2 == 0) {
+      if (frame % 2 == 0) {
         bonusPos--;
       }
     } else {
@@ -370,9 +376,9 @@ shoot:
     }
 
     countDown--;
-    cycle++;
-    if (cycle > 20) {
-      cycle = 1;
+    frame++;
+    if (frame > 20) {
+      frame = 1;
     }
     backgroundLayer.swapBuffers(true); //refreshes the screen
   }

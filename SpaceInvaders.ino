@@ -7,7 +7,7 @@ void spaceInvaders() {
   frame = 0;
 
 start:
-  int enemyData[81]; // 28 enemies (x,y,type)
+  int enemyData[81]; // 27 enemies (x,y,type)
   int shotData[18];  //6 possible shots at once (x,y,Direction)
   byte place = 8;
   int xPos = place;
@@ -25,28 +25,28 @@ start:
   byte choice = 0;
 
 
-  const PROGMEM boolean invader3 [5][5] = {
+  const PROGMEM boolean invader3 [5][5] = { //move to sd card to save space
     {0, 1, 1, 1, 0},
     {1, 0, 1, 0, 1},
     {1, 1, 1, 1, 1},
     {0, 1, 0, 1, 0},
     {0, 1, 1, 1, 0}
   };
-  const PROGMEM boolean invader2 [5][5] = {
+  const PROGMEM boolean invader2 [5][5] = {//move to sd card to save space
     {0, 1, 1, 1, 0},
     {1, 0, 1, 0, 1},
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 1},
     {0, 1, 0, 1, 0}
   };
-  const PROGMEM boolean invader1 [5][5] = {
+  const PROGMEM boolean invader1 [5][5] = {//move to sd card to save space
     {0, 1, 1, 1, 0},
     {1, 0, 1, 0, 1},
     {1, 1, 1, 1, 1},
     {0, 1, 0, 1, 0},
     {1, 0, 1, 0, 1}
   };
-  const PROGMEM boolean bonusShip [5][9] = {
+  const PROGMEM boolean bonusShip [5][9] = {//move to sd card to save space
     {0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 1, 1, 1, 1, 1, 0, 0},
     {0, 1, 1, 0, 1, 0, 1, 1, 0},
@@ -63,8 +63,8 @@ start:
     for (int i = 2; i < 51; i = i + 6) { //21 + 6
       enemyData[arrayPos] =  i;
       if (c == 1) {
-        enemyData[arrayPos + 1] = 10;
-        enemyData[arrayPos + 2] = 1;
+        enemyData[arrayPos + 1] = 10;//c*6+4
+        enemyData[arrayPos + 2] = 1;//c
       } if (c == 2) {
         enemyData[arrayPos + 1] = 16;
         enemyData[arrayPos + 2] = 2;

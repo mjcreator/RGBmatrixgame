@@ -25,25 +25,25 @@ void pong() {
     if (frame % 4 == 0) {
       if (JYValue < 500) {
         pos2--;
-        if (pos2 < 8) { //keeps ship on screen
+        if (pos2 < 8) { //keeps paddle on screen
           pos2 = 8;
         }
       } else if (JYValue > 600) {
         pos2++;
-        if (pos2 > 28) { //keeps ship on screen
+        if (pos2 > 28) { //keeps paddle on screen
           pos2 = 28;
         }
       }
-      if (bx < 40 && bxv < 0) {
+      if (bx < 50 && bxv < 0) {
         if (by > pos1) {
           pos1++;
-          if (pos1 > 28) { //keeps ship on screen
+          if (pos1 > 28) { //keeps paddle on screen
             pos1 = 28;
           }
         }
         if (by < pos1) {
           pos1--;
-          if (pos1 < 8) { //keeps ship on screen
+          if (pos1 < 8) { //keeps paddle on screen
             pos1 = 8;
           }
         }
@@ -109,8 +109,9 @@ void pong() {
     backgroundLayer.swapBuffers(false);
 
     frame++;
-    if (frame % 1500 == 0) {
+    if (frame % 1000 == 0) {
       speeds--;
+      Serial.println(speeds);
     }
     delay(5);
   }

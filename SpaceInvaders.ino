@@ -25,28 +25,28 @@ start:
   byte choice = 0;
 
 
-  const PROGMEM boolean invader3 [5][5] = { //move to sd card to save space
+  const PROGMEM boolean invader3 [5][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 1, 0, 1},
     {1, 1, 1, 1, 1},
     {0, 1, 0, 1, 0},
     {0, 1, 1, 1, 0}
   };
-  const PROGMEM boolean invader2 [5][5] = {//move to sd card to save space
+  const PROGMEM boolean invader2 [5][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 1, 0, 1},
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 1},
     {0, 1, 0, 1, 0}
   };
-  const PROGMEM boolean invader1 [5][5] = {//move to sd card to save space
+  const PROGMEM boolean invader1 [5][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 1, 0, 1},
     {1, 1, 1, 1, 1},
     {0, 1, 0, 1, 0},
     {1, 0, 1, 0, 1}
   };
-  const PROGMEM boolean bonusShip [5][9] = {//move to sd card to save space
+  const PROGMEM boolean bonusShip [5][9] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 1, 1, 1, 1, 1, 0, 0},
     {0, 1, 1, 0, 1, 0, 1, 1, 0},
@@ -63,8 +63,8 @@ start:
     for (int i = 2; i < 51; i = i + 6) { //21 + 6
       enemyData[arrayPos] =  i;
       if (c == 1) {
-        enemyData[arrayPos + 1] = 10;//c*6+4
-        enemyData[arrayPos + 2] = 1;//c
+        enemyData[arrayPos + 1] = 10;
+        enemyData[arrayPos + 2] = 1;
       } if (c == 2) {
         enemyData[arrayPos + 1] = 16;
         enemyData[arrayPos + 2] = 2;
@@ -186,7 +186,7 @@ start:
                 if (myShipPos - 2 < shotData[i]) {
                   shotData[i + 2] = 3;
                   lives--;
-                  Serial.print("lives");
+                  Serial.print("lives: ");
                   Serial.println(lives);
                   backgroundLayer.fillRectangle(myShipPos - 2, 31, 5, 3, {0, 0, 0});
                   backgroundLayer.drawPixel(myShipPos , 31, {255, 36, 0});
@@ -263,7 +263,7 @@ shoot:
             level++;
             goto start;
           } else {
-            lives = 0;
+            lives = -5;
             enemies--;
             backgroundLayer.fillScreen({0, 0, 0});
             goto shoot;

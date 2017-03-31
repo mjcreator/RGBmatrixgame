@@ -1,3 +1,4 @@
+#define updaterate 10
 void snake() {
   JXValue = 0;
   JYValue = 0;
@@ -50,7 +51,7 @@ void snake() {
     if (Direction == oldDirection - 2) {
       Direction = oldDirection;
     }
-    if (frame == 10) {
+    if (frame%updaterate == 0) {
       switch (Direction) {// keeps it going forward
         case 1:
           bodyPixelsY[0]++;
@@ -114,7 +115,7 @@ void snake() {
     }
 
     frame++;
-    if (frame == 11) {
+    if (frame >= 2000) {
       frame = 1;
     }
     delay(10);

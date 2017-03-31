@@ -44,8 +44,8 @@ boolean oldButtonValue = 0;
 int oldJXValue = 0;
 int oldJYValue = 0;
 int score = 0;
-int IHighScore = 5700;
-int SHighScore = 187;
+int IHighScore = 24800;
+int SHighScore = 244;
 String texts = "";
 char str[50];
 int level = 0;
@@ -115,6 +115,8 @@ void loop() {
         choice = choices - 1;
       }
     }
+    backgroundLayer.fillScreen({0, 0, 0});
+    backgroundLayer.swapBuffers(true);
   }
 
   if (!oldButtonValue) {
@@ -188,15 +190,42 @@ void beginJoysticks() {
   ads[0].begin();
   ads[1].begin();
 }
-//bool isJoyConnected(int joy) {
-//  ads[joy].readADC_SingleEnded(0);
-//}
+void JoyDebug(int joy) {
+  Serial.print(ads[joy].readADC_SingleEnded(0));
+  Serial.print(" ");
+  Serial.print(ads[joy].readADC_SingleEnded(1));
+  Serial.print(" ");
+  Serial.print(ads[joy].readADC_SingleEnded(2));
+  Serial.print(" ");
+  Serial.println(ads[joy].readADC_SingleEnded(3));
+}
+
+bool isConnected(int joy) {
+  if (ads[joy].readADC_SingleEnded(0) > 4000) {
+    backgroundLayer.fillScreen({0, 0, 0});
+    backgroundLayer.setFont(font6x10);
+    backgroundLayer.drawString(0, 2, {255, 0, 0}, "Connect");
+    backgroundLayer.drawString(0, 16, {255, 0, 0}, "controller");
+    backgroundLayer.swapBuffers(true);
+  } else {
+  }
+
+}
 int getAxis(int joy, int num) {
-  return ads[joy].readADC_SingleEnded(num + 1);
+  //JoyDebug(joy);
+  isConnected(joy);
+  int adc = ads[joy].readADC_SingleEnded(num + 1);
+  if (adc < 4000) {
+    return adc;
+  } else {
+    return 550;
+  }
 }
 bool getButton(int joy, int num) {
+  //JoyDebug(joy);
+  isConnected(joy);
   int adc = ads[joy].readADC_SingleEnded(num * 3);
-  if (adc > 800) {
+  if (adc > 800 && adc < 4000) {
     return true;
   } else {
     return false;
